@@ -31,7 +31,7 @@ const AddProduct = () => {
     // using try catch method  
 
     try {
-        const response = await fetch("http://localhost:4000/upload", {
+        const response = await fetch("https://shopper-backend-f50i.onrender.com/upload", {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -44,7 +44,7 @@ const AddProduct = () => {
                 product.image = responseData.image_url;
                 console.log(product);
 
-                await fetch('http://localhost:4000/addproduct',{
+                await fetch('https://shopper-backend-f50i.onrender.com/addproduct',{
                     method:'POST',
                     headers:{
                         Accept:'application/json',
