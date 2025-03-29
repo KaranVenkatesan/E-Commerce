@@ -1,5 +1,3 @@
-// Context Api for filter the kids section
-
 import React, { createContext, useEffect, useState } from "react";
 
 export const ShopContext = createContext(null);
@@ -23,6 +21,7 @@ const ShopContextProvider = (props) => {
             .then((data) => setAll_Product(data))
             .catch((error) => console.error("Error fetching products:", error));
 
+<<<<<<< HEAD
             if (localStorage.getItem('auth-token')) {
                 fetch('http://localhost:4000/getcart',{
                     method:'POST',
@@ -37,6 +36,24 @@ const ShopContextProvider = (props) => {
                 .then((data) => setcartItems(data))
                 .catch((error) => console.error("Error fetching products:", error));
             }
+=======
+        if (localStorage.getItem('auth-token')) {
+            fetch(`${url}/getcart`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'auth-token': `${localStorage.getItem('auth-token')}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data && typeof data === "object") setcartItems(data);
+            })
+            .catch((error) => console.error("Error fetching cart data:", error));
+        }
+>>>>>>> 9e5e11f5dfa8c7338f9b4a490a95c85d0da8e615
     }, []);
 
     const addToCart = (itemId) => {
@@ -46,15 +63,19 @@ const ShopContextProvider = (props) => {
             fetch("http://localhost:4000/addtocart", {
                 method: "POST",
                 headers: {
-                    Accept: "application/json", 
+                    Accept: "application/json",
                     "auth-token": `${localStorage.getItem("auth-token")}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ itemId: itemId }),
             })
+<<<<<<< HEAD
                 .then((response) => response.json())
                 .then((data) => console.log(data))
                 .catch((error) => console.error("Error adding to cart:", error)); 
+=======
+            .catch((error) => console.error("Error adding to cart:", error));
+>>>>>>> 9e5e11f5dfa8c7338f9b4a490a95c85d0da8e615
         }
     };
 
@@ -71,9 +92,13 @@ const ShopContextProvider = (props) => {
                 },
                 body: JSON.stringify({ itemId: itemId }),
             })
+<<<<<<< HEAD
                 .then((response) => response.json())
                 .then((data) => console.log(data))
                 .catch((error) => console.error("Error removing from cart:", error)); // Added error handling
+=======
+            .catch((error) => console.error("Error removing from cart:", error));
+>>>>>>> 9e5e11f5dfa8c7338f9b4a490a95c85d0da8e615
         }
     };
 
