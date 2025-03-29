@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Item from '../Item/Item';
 
 const NewCollections = () => {
-  const [new_collection,setNew_collection] = useState([])
+  const url = "https://shopper-backend-f50i.onrender.com";
+  const [new_collection, setNew_collection] = useState([]);
 
-  useEffect(()=>{
-      fetch('https://shopper-backend-f50i.onrender.com/newcollection')
-      .then((response)=>response.json())
-      .then((data)=>setNew_collection(data))
-  },[])
+  useEffect(() => {
+    fetch(`${url}/newcollection`)
+      .then((response) => response.json())
+      .then((data) => setNew_collection(data))
+      .catch((error) => console.error("Error fetching new collection:", error));
+  }, []);
+
   return (
     <div className="flex flex-col items-center gap-2 mt-5 mb-[50px] sm:mb-[70px] px-3 sm:px-8">
       {/* New Collections Header */}
