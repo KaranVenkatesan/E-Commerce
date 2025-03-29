@@ -1,5 +1,3 @@
-// Context Api for filter the kids section
-
 import React, { createContext, useEffect, useState } from "react";
 
 export const ShopContext = createContext(null);
@@ -13,7 +11,7 @@ const getDefaultCart = () => {
 };
 
 const ShopContextProvider = (props) => {
-    const url = "https://shopper-backend-f50i.onrender.com";
+    const url = "https://shopper-backend-f50i.onrender.com"
     const [all_product, setAll_Product] = useState([]);
     const [cartItems, setcartItems] = useState(getDefaultCart());
 
@@ -31,11 +29,13 @@ const ShopContextProvider = (props) => {
                     'auth-token': `${localStorage.getItem('auth-token')}`,
                     'Content-Type': 'application/json',
                 },
-                body: "",
+                body: JSON.stringify({}),
             })
             .then((response) => response.json())
-            .then((data) => setcartItems(data))
-            .catch((error) => console.error("Error fetching cart:", error));
+            .then((data) => {
+                if (data && typeof data === "object") setcartItems(data);
+            })
+            .catch((error) => console.error("Error fetching cart data:", error));
         }
     }, []);
 
@@ -46,15 +46,13 @@ const ShopContextProvider = (props) => {
             fetch(`${url}/addtocart`, {
                 method: "POST",
                 headers: {
-                    Accept: "application/json", 
+                    Accept: "application/json",
                     "auth-token": `${localStorage.getItem("auth-token")}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ itemId: itemId }),
             })
-                .then((response) => response.json())
-                .then((data) => console.log(data))
-                .catch((error) => console.error("Error adding to cart:", error));
+            .catch((error) => console.error("Error adding to cart:", error));
         }
     };
 
@@ -71,9 +69,7 @@ const ShopContextProvider = (props) => {
                 },
                 body: JSON.stringify({ itemId: itemId }),
             })
-                .then((response) => response.json())
-                .then((data) => console.log(data))
-                .catch((error) => console.error("Error removing from cart:", error));
+            .catch((error) => console.error("Error removing from cart:", error));
         }
     };
 
