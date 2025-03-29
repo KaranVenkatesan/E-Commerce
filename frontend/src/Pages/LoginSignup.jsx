@@ -17,7 +17,7 @@ const LoginSignup = () => {
   const login = async () => {
     console.log("Login function Excuted",formData);
     let responseData;
-    await fetch('https://shopper-backend-f50i.onrender.com/login',{
+    await fetch('http://localhost:4000/login',{
       method:'POST',
       headers:{
         Accept:'application/form-data',
@@ -40,7 +40,7 @@ const LoginSignup = () => {
   const signup = async () => {
     console.log("Sign Up function Excuted",formData);
     let responseData;
-    await fetch('https://shopper-backend-f50i.onrender.com/signup',{
+    await fetch('http://localhost:4000/signup',{
       method:'POST',
       headers:{
         Accept:'application/form-data',
