@@ -7,7 +7,7 @@ const ListProduct = () => {
 
     const fetchInfo = async () => {
         try {
-            const response = await fetch('https://shopper-backend-f50i.onrender.com/allproducts');
+            const response = await fetch('http://localhost:4000/allproducts');
             const data = await response.json();
             setAllProducts(data);
         } catch (error) {
@@ -20,7 +20,7 @@ const ListProduct = () => {
     },[]);
 
     const remove_product = async (id) => {
-        await fetch('https://shopper-backend-f50i.onrender.com/removeproduct',{
+        await fetch('http://localhost:4000/removeproduct',{
             method:'POST',
             headers:{
                 Accept:'application/json',
