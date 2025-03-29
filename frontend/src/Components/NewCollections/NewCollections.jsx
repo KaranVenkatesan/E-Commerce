@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Item from '../Item/Item';
 
 const NewCollections = () => {
-  const url = "https://shopper-backend-f50i.onrender.com";
   const [new_collection, setNew_collection] = useState([]);
+  const url = "https://shopper-backend-f50i.onrender.com" || "http://localhost:4000"; // Prioritize deployed backend
 
   useEffect(() => {
     fetch(`${url}/newcollection`)
