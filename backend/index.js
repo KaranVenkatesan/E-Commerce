@@ -45,8 +45,7 @@ app.use('/images', express.static(`upload/images`))
 app.post("/upload", upload.single('product'), (req, res) => {
     res.json({
         success: 1,
-        image_url: `${process.env.MONGO_URI}/images/${req.file.filename}`
-    })
+        image_url: `${process.env.SERVER_URL}/images/${req.file.filename}`,     })
 })
 
 // Schema for Creating Products
