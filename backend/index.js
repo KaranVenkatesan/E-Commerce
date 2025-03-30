@@ -15,7 +15,12 @@ app.use(express.json())
 app.use(cors())
 
 // Database Connection With MongoDB
-mongoose.connect("mongodb+srv://vkaran0915:2000@cluster0.qylxt.mongodb.net/e-commerce")
+mongoose.connect(process.env.MONGO_URI || "mongodb+srv://vkaran0915:2000@cluster0.qylxt.mongodb.net/e-commerce", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.log("MongoDB Connection Error: ", err));
 
 //API Creation
 
@@ -40,7 +45,7 @@ app.use('/images', express.static(`upload/images`))
 app.post("/upload", upload.single('product'), (req, res) => {
     res.json({
         success: 1,
-        image_url: `http://localhost:${port}/images/${req.file.filename}`
+        image_url: `${process.env.MONGO_URI}/images/${req.file.filename}`
     })
 })
 
