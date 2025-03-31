@@ -3,10 +3,9 @@ import Item from '../Item/Item';
 
 const NewCollections = () => {
   const [new_collection, setNew_collection] = useState([]);
-  const url = process.env.REACT_APP_BACKEND_URL || "https://shopper-backend-f50i.onrender.com"; 
 
   useEffect(() => {
-    fetch(`${url}/newcollection`)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/newcollection`)
       .then((response) => response.json())
       .then((data) => setNew_collection(data))
       .catch((error) => console.error("Error fetching new collection:", error));

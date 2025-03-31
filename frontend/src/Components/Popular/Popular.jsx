@@ -6,12 +6,12 @@ const Popular = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const url = process.env.REACT_APP_BACKEND_URL || "https://shopper-backend-f50i.onrender.com";
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${url}/popularinwomen`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/popularinwomen`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
