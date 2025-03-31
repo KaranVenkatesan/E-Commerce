@@ -6,7 +6,7 @@ const Popular = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
+  const url = process.env.REACT_APP_BACKEND_URL || "https://shopper-backend-f50i.onrender.com";
 
   useEffect(() => {
     const fetchData = async () => {
