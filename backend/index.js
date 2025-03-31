@@ -12,7 +12,10 @@ const { type } = require("os");
 const { error, log } = require("console");
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: "https://shopper-frontend-7xgk.onrender.com",
+    credentials: true,
+}));
 
 // Database Connection With MongoDB
 mongoose.connect(process.env.MONGO_URI || "mongodb+srv://vkaran0915:2000@cluster0.qylxt.mongodb.net/e-commerce", {
@@ -37,16 +40,20 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage })
+const upload = multer({ storage: storage });
 
 // Creating Upload Endpoint for images 
-app.use('/images', express.static(`upload/images`))
+app.use('/images', express.static(path.join(__dirname, 'upload', 'images')));
 
 app.post("/upload", upload.single('product'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ success: 0, error: "File upload failed" });
+    }
     res.json({
         success: 1,
-        image_url: `${process.env.SERVER_URL}/images/${req.file.filename}`,     })
-})
+        image_url: `${process.env.SERVER_URL || "http://localhost:" + port}/images/${req.file.filename}`,
+    });
+});
 
 // Schema for Creating Products
 
