@@ -6,7 +6,7 @@ const NewCollections = () => {
   const url = process.env.REACT_APP_BACKEND_URL || "https://shopper-backend-f50i.onrender.com"; 
 
   useEffect(() => {
-    fetch(`https://shopper-backend-f50i.onrender.com//newcollection`)
+    fetch(`https://shopper-backend-f50i.onrender.com/newcollection`)
       .then((response) => response.json())
       .then((data) => setNew_collection(data))
       .catch((error) => console.error("Error fetching new collection:", error));
