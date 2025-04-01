@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Item from "../Item/Item";
 
 const Popular = () => {
@@ -6,12 +6,14 @@ const Popular = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const url = process.env.REACT_APP_BACKEND_URL || "https://shopper-backend-f50i.onrender.com";
+  const urlRef = useRef(process.env.REACT_APP_BACKEND_URL || "https://shopper-backend-f50i.onrender.com");
+
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/popularinwomen`);
+        const response = await fetch(`${urlRef.current}/popularinwomen`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -26,7 +28,7 @@ const Popular = () => {
     };
 
     fetchData();
-  }, [url]);
+  }, []);
 
   return (
     <div className="flex flex-col items-center gap-2.5 mt-7 mb-12 px-3 sm:px-8">
