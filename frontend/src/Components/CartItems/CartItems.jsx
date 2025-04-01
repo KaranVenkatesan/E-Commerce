@@ -41,11 +41,13 @@ const CartItems = () => {
                             <p className="text-center md:text-left font-medium">${e.new_price}</p>
 
                             {/* Quantity Buttons */}
-                            <div className="flex justify-center md:justify-start items-center border border-gray-400 rounded-md w-28">
-                                <button className="px-3 py-1 text-lg bg-gray-200 hover:bg-gray-300">-</button>
-                                <span className="px-4">{cartItems[e.id]}</span>
-                                <button className="px-3 py-1 text-lg bg-gray-200 hover:bg-gray-300">+</button>
+                            <div className="flex justify-center items-center border border-gray-400 rounded-md w-20 sm:w-28 bg-gray-100 py-1 px-2 shadow-md hover:shadow-lg transition-shadow duration-200">
+                                <span className="text-lg font-medium text-gray-700">{cartItems[e.id]}</span>
                             </div>
+
+
+
+
 
                             {/* Total Price */}
                             <p className="text-center md:text-left font-semibold">${(e.new_price * cartItems[e.id]).toFixed(2)}</p>
@@ -67,7 +69,7 @@ const CartItems = () => {
                 {/* Cart Totals */}
                 <div className="w-full lg:w-1/2 bg-gray-100 p-6 rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold border-b pb-3 mb-4">Cart Totals</h1>
-                    
+
                     <div className="flex justify-between py-2 border-b">
                         <p className="text-lg">Subtotal</p>
                         <p className="text-lg font-semibold">${subtotal.toFixed(2)}</p>

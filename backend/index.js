@@ -1,4 +1,4 @@
-require("dotenv").config(); 
+require("dotenv").config();
 
 const port = process.env.PORT || 4000;
 const express = require("express");
@@ -20,8 +20,8 @@ mongoose.connect(process.env.MONGO_URI || "mongodb+srv://vkaran0915:2000@cluster
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log("MongoDB Connection Error: ", err));
+    .then(() => console.log("MongoDB Connected"))
+    .catch(err => console.log("MongoDB Connection Error: ", err));
 
 //API Creation
 app.get("/", (req, res) => {
@@ -303,11 +303,11 @@ app.post('/addtocart', fetchUser, async (req, res) => {
     try {
         console.log("Added", req.body.itemId);
         let userData = await Users.findOne({ _id: req.user.id });
-        
+
         if (!userData) {
             return res.status(404).json({ success: false, error: "User not found" });
         }
-        
+
         userData.cartData[req.body.itemId] = (userData.cartData[req.body.itemId] || 0) + 1;
         await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userData.cartData });
         res.json({ success: true, message: "Added to cart" });
@@ -322,14 +322,14 @@ app.post('/removefromcart', fetchUser, async (req, res) => {
     try {
         console.log("removed", req.body.itemId);
         let userData = await Users.findOne({ _id: req.user.id });
-        
+
         if (!userData) {
             return res.status(404).json({ success: false, error: "User not found" });
         }
-        
+
         if (userData.cartData[req.body.itemId] > 0)
             userData.cartData[req.body.itemId] -= 1;
-        
+
         await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userData.cartData });
         res.json({ success: true, message: "Removed from cart" });
     } catch (error) {
@@ -341,18 +341,25 @@ app.post('/removefromcart', fetchUser, async (req, res) => {
 app.post('/getcart', fetchUser, async (req, res) => {
     try {
         console.log("GetCart");
-        let userData = await Users.findOne({ _id: req.user.id });
+
+        // Ensure the user is authenticated and userData exists
+        let userData = await Users.findOne({ _id: req.user.id }).select('cartData');
 
         if (!userData) {
             return res.status(404).json({ success: false, error: "User not found" });
         }
 
-        res.json(userData.cartData);
+        if (!userData.cartData) {
+            return res.status(404).json({ success: false, error: "No cart data found for this user" });
+        }
+
+        res.json({ success: true, cartData: userData.cartData }); 
     } catch (error) {
         console.error("Error fetching cart data:", error);
-        res.status(500).json({ success: false, error: "Server Error" });
+        res.status(500).json({ success: false, error: "Server Error: " + error.message });
     }
 });
+
 
 app.listen(port, (error) => {
     if (!error) {
