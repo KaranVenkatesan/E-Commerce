@@ -8,7 +8,12 @@ const path = require("path");
 const cors = require("cors");
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "https://shopper-frontend-7xgk.onrender.com",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
+
 
 // Database Connection With MongoDB
 mongoose.connect("mongodb+srv://vkaran0915:2000@cluster0.qylxt.mongodb.net/e-commerce");
