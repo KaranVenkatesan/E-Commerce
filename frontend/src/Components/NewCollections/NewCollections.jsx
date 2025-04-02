@@ -3,7 +3,7 @@ import Item from '../Item/Item';
 
 const NewCollections = () => {
   const [new_collection, setNew_collection] = useState([]);
-  const urlRef = useRef(process.env.REACT_APP_BACKEND_URL || "https://shopper-backend-f50i.onrender.com");
+  const urlRef = useRef(process.env.REACT_APP_BACKEND_URL || `https://shopper-backend-f50i.onrender.com`);
 
   useEffect(() => {
     fetch(`${urlRef.current}/newcollection`)
