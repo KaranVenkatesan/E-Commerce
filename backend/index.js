@@ -11,10 +11,9 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 app.use(express.json());
-app.use(cors({
-    origin: process.env.FRONTEND_URL || "https://shopper-frontend-7xgk.onrender.com",
-    credentials: true,
-}));
+const cors = require("cors");
+app.use(cors({ origin: "*" })); 
+
 
 // Database Connection With MongoDB
 mongoose.connect(process.env.MONGO_URI || "mongodb+srv://vkaran0915:2000@cluster0.qylxt.mongodb.net/e-commerce", {
