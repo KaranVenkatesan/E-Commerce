@@ -8,8 +8,6 @@ const Popular = () => {
 
   const urlRef = useRef(process.env.REACT_APP_BACKEND_URL || "https://shopper-backend-f50i.onrender.com");
 
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,7 +53,7 @@ const Popular = () => {
             </div>
           ))
         ) : (
-          <p className="text-gray-500">No products available.</p>
+          <p className="text-gray-500">No popular products available.</p>
         )}
       </div>
     </div>

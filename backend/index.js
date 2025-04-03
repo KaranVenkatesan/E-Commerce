@@ -1,4 +1,4 @@
-const port = 4000;
+require("dotenv").config(); // Load environment variables
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -7,16 +7,21 @@ const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 
+const port = process.env.PORT || 4000;
+
+// Middleware
 app.use(express.json());
 app.use(cors({
-    origin: "https://shopper-frontend-7xgk.onrender.com",
+    origin: process.env.FRONTEND_URL || "https://shopper-frontend-7xgk.onrender.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
 
-
 // Database Connection With MongoDB
-mongoose.connect("mongodb+srv://vkaran0915:2000@cluster0.qylxt.mongodb.net/e-commerce");
+mongoose.connect(process.env.MONGO_URI, {
+
+}).then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log("MongoDB Connection Error:", err));
 
 // API Creation
 app.get("/", (req, res) => {
@@ -36,11 +41,11 @@ const upload = multer({ storage: storage });
 // Serving Static Files
 app.use("/images", express.static("upload/images"));
 
-// Upload Image Endpoint
+// Upload Image Endpoint (Fix: Uses Render Backend URL)
 app.post("/upload", upload.single("product"), (req, res) => {
     res.json({
         success: 1,
-        image_url: `http://localhost:${port}/images/${req.file.filename}`,
+        image_url: `${process.env.BACKEND_URL}/images/${req.file.filename}`,
     });
 });
 
@@ -110,7 +115,7 @@ app.post("/signup", async (req, res) => {
     });
 
     await user.save();
-    const token = jwt.sign({ user: { id: user.id } }, "secret_ecom");
+    const token = jwt.sign({ user: { id: user.id } }, process.env.JWT_SECRET);
     res.json({ success: true, token });
 });
 
@@ -121,7 +126,7 @@ app.post("/login", async (req, res) => {
         if (!user) return res.json({ success: false, error: "Wrong Email id" });
 
         if (req.body.password === user.password) {
-            const token = jwt.sign({ user: { id: user.id } }, "secret_ecom");
+            const token = jwt.sign({ user: { id: user.id } }, process.env.JWT_SECRET);
             res.json({ success: true, token });
         } else {
             res.json({ success: false, error: "Wrong Password" });
@@ -143,13 +148,13 @@ app.get("/popularinwomen", async (req, res) => {
     res.send(products.slice(0, 4));
 });
 
-// Middleware to Fetch User
+// Middleware to Fetch User (Fix: Uses JWT Secret from `.env`)
 const fetchUser = async (req, res, next) => {
     const token = req.header("auth-token");
     if (!token) return res.status(401).send({ errors: "Please authenticate using a valid token" });
 
     try {
-        const data = jwt.verify(token, "secret_ecom");
+        const data = jwt.verify(token, process.env.JWT_SECRET);
         req.user = data.user;
         next();
     } catch (error) {
@@ -175,6 +180,6 @@ app.post("/removefromcart", fetchUser, async (req, res) => {
 
 // Start Server
 app.listen(port, (error) => {
-    if (!error) console.log("Server Running on Port " + port);
-    else console.log("Error :" + error);
+    if (!error) console.log(`Server Running on Port ${port}`);
+    else console.log(" Error: " + error);
 });
