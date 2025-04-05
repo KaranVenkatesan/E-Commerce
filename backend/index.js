@@ -9,14 +9,14 @@ const cors = require("cors");
 
 app.use(express.json());
 app.use(cors({
-    origin: "https://e-commerce-frontend-olive-zeta.vercel.app/",
+    origin: "https://e-commerce-frontend-olive-zeta.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
 
-
 // Database Connection With MongoDB
 mongoose.connect("mongodb+srv://vkaran0915:2000@cluster0.qylxt.mongodb.net/e-commerce");
+console.log("Connected");
 
 // API Creation
 app.get("/", (req, res) => {
@@ -43,7 +43,6 @@ app.post("/upload", upload.single("product"), (req, res) => {
         image_url: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
     });
 });
-
 
 // Product Schema
 const Product = mongoose.model("Product", {
@@ -101,7 +100,8 @@ app.post("/signup", async (req, res) => {
     let check = await Users.findOne({ email: req.body.email });
     if (check) return res.status(400).json({ success: false, errors: "Existing User found with same email" });
 
-    let cart = {}; for (let i = 0; i < 300; i++) cart[i] = 0;
+    let cart = {}; 
+    for (let i = 0; i < 300; i++) cart[i] = 0;
     
     const user = new Users({
         name: req.body.username,
