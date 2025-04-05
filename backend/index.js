@@ -9,7 +9,7 @@ const cors = require("cors");
 
 app.use(express.json());
 app.use(cors({
-    origin: "https://e-commerce-frontend-olive-zeta.vercel.app",
+    origin: "https://e-commerce-frontend-olive-zeta.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
@@ -40,9 +40,10 @@ app.use("/images", express.static("upload/images"));
 app.post("/upload", upload.single("product"), (req, res) => {
     res.json({
         success: 1,
-        image_url: `http://localhost:${port}/images/${req.file.filename}`,
+        image_url: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
     });
 });
+
 
 // Product Schema
 const Product = mongoose.model("Product", {
