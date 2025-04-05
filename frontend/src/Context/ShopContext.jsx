@@ -12,42 +12,47 @@ const getDefaultCart = () => {
 
 const ShopContextProvider = (props) => {
     const [all_product, setAll_Product] = useState([]);
-    const [cartItems, setcartItems] = useState(getDefaultCart());
+    const [cartItems, setCartItems] = useState(getDefaultCart());
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "https://shopper-backend-f50i.onrender.com";
 
     useEffect(() => {
+        // Fetch all products
         fetch(`${BACKEND_URL}/allproducts`)
             .then((response) => response.json())
             .then((data) => setAll_Product(data))
             .catch((error) => console.error("Error fetching products:", error));
 
-        if (localStorage.getItem('auth-token')) {
+        // Fetch cart items if user is authenticated
+        const authToken = localStorage.getItem("auth-token");
+        if (authToken) {
             fetch(`${BACKEND_URL}/getcart`, {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    Accept: 'application/json',
-                    'auth-token': localStorage.getItem('auth-token'),
-                    'Content-Type': 'application/json',
+                    Accept: "application/json",
+                    "auth-token": authToken,
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({}),
             })
             .then((response) => response.json())
             .then((data) => {
-                if (data && typeof data === "object") setcartItems(data);
+                if (data && typeof data === "object") setCartItems(data);
             })
             .catch((error) => console.error("Error fetching cart data:", error));
         }
-    }, []);
+    }, [BACKEND_URL]);
 
+    // Function to add items to cart
     const addToCart = (itemId) => {
-        setcartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
+        setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
 
-        if (localStorage.getItem("auth-token")) {
+        const authToken = localStorage.getItem("auth-token");
+        if (authToken) {
             fetch(`${BACKEND_URL}/addtocart`, {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
-                    "auth-token": localStorage.getItem("auth-token"),
+                    "auth-token": authToken,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ itemId }),
@@ -56,15 +61,21 @@ const ShopContextProvider = (props) => {
         }
     };
 
+    // Function to remove items from cart
     const removeFromCart = (itemId) => {
-        setcartItems((prev) => ({ ...prev, [itemId]: Math.max(0, prev[itemId] - 1) }));
+        setCartItems((prev) => {
+            const updatedCart = { ...prev };
+            updatedCart[itemId] = Math.max(0, prev[itemId] - 1);
+            return updatedCart;
+        });
 
-        if (localStorage.getItem("auth-token")) {
+        const authToken = localStorage.getItem("auth-token");
+        if (authToken) {
             fetch(`${BACKEND_URL}/removefromcart`, {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
-                    "auth-token": localStorage.getItem("auth-token"),
+                    "auth-token": authToken,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ itemId }),
@@ -73,6 +84,7 @@ const ShopContextProvider = (props) => {
         }
     };
 
+    // Function to get total items in cart
     const getTotalCartItems = () => {
         return Object.values(cartItems).reduce((total, count) => total + count, 0);
     };
