@@ -39,7 +39,7 @@ const LoginSignup = () => {
       localStorage.setItem("auth-token", responseData.token);
       navigate("/"); 
     } else {
-      alert(responseData.errors);
+      alert(responseData.error);
     }
   };
 
@@ -67,7 +67,7 @@ const LoginSignup = () => {
       localStorage.setItem("auth-token", responseData.token);
       navigate("/"); 
     } else {
-      alert(responseData.errors);
+      alert(responseData.error);
     }
   };
 
