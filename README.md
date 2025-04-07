@@ -32,28 +32,3 @@
 🔗 **Frontend**: [https://e-commerce-frontend-olive-zeta.vercel.app](https://e-commerce-frontend-olive-zeta.vercel.app)  
 🔗 **Backend**: [https://shopper-backend-f50i.onrender.com](https://shopper-backend-f50i.onrender.com)
 
----
-
-## 📂 GitHub Repositories
-
-- **Frontend Repo**: [github.com/yourusername/shopper-frontend](https://github.com/yourusername/shopper-frontend)  
-- **Backend Repo**: [github.com/yourusername/shopper-backend](https://github.com/yourusername/shopper-backend)
-
-> ⚠️ Replace `yourusername` with your actual GitHub username.
-
----
-
-## 📸 Screenshots
-
-_Add a few screenshots of your UI here if you have._
-
----
-
-## 📌 Setup Instructions (for local development)
-
-### Backend
-```bash
-git clone https://github.com/yourusername/shopper-backend.git
-cd shopper-backend
-npm install
-node index.js
